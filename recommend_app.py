@@ -8,23 +8,17 @@ Original file is located at
 """
 
 import pandas as pd
-
+import streamlit as st
 import numpy as np
 import pickle
+import string
 
-df1 = pd.read_csv('tech.csv', on_bad_lines='skip', engine='python')
-
-df1.info()
-
+df1 = pd.read_csv('new.csv', on_bad_lines='skip', engine='python')
 df1 = df1.dropna()
-
-df1.dropna()
-
-df1['jobdescription'].head()
 
 from sklearn.feature_extraction.text import TfidfVectorizer
 
-tdif = TfidfVectorizer()
+tdif = TfidfVectorizer(stop_words='english')
 
 df1['jobdescription'] = df1['jobdescription'].fillna('')
 
@@ -43,11 +37,16 @@ def get_recommendations(title, cosine_sim = cosine_sim):
   tech_indices = [i[0] for i in sim_scores]
   return df1['jobtitle'].iloc[tech_indices]
 
-new1 = df1[['jobtitle', 'jobdescription']]
+st.header('tech jobs recommender')
+jobs = pickle.load(new1, open('job_list.pkl','rb'))
+similarity = pickle.load(cosine_sim, open('similarity.pkl','rb'))
 
-df1.tail()
-
-new1.to_csv('new.csv')
-
-pickle.dump(new1, open('job_list.pkl','wb'))
-pickle.dump(cosine_sim, open('similarity.pkl','wb'))
+jobs_list = jobs['jobtitle'].values
+selected_job = st.selectbox(
+    "Type or select a job from the dropdown",
+    jobs_list
+)
+if st.button('Show Recommendtion'):
+    recommend_job_names = get_recommendations(selected_job)
+    for i in recommend_job_names:
+        st.subheader(i):
