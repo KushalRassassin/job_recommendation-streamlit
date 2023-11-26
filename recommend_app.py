@@ -49,4 +49,4 @@ selected_job = st.selectbox(
 if st.button('Show Recommendtion'):
     recommend_job_names = get_recommendations(selected_job)
     for i in recommend_job_names:
-        st.subheader(i):
+        st.subheader(i)
