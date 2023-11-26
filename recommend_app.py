@@ -38,8 +38,8 @@ def get_recommendations(title, cosine_sim = cosine_sim):
   return df1['jobtitle'].iloc[tech_indices]
 
 st.header('tech jobs recommender')
-jobs = pickle.load( open('job_list.pkl','rb'))
-similarity = pickle.load( open('similarity.pkl','rb'))
+jobs = pickle.load(open('job_list.pkl','rb'))
+similarity = pickle.load(open('similarity.pkl','rb'))
 
 jobs_list = jobs['jobtitle'].values
 selected_job = st.selectbox(
