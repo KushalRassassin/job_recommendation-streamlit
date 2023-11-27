@@ -29,13 +29,15 @@ from sklearn.metrics.pairwise import sigmoid_kernel
 cosine_sim = sigmoid_kernel(tdif_matrix, tdif_matrix)
 indices = pd.Series(df1.index, index=df1['jobtitle']).drop_duplicates()
 
-def get_recommendations(title, cosine_sim = cosine_sim):
-  idx = indices[title]
-  sim_scores = list(enumerate(cosine_sim[idx]))
-  sim_scores = sorted(sim_scores, key=lambda x: x[1][0], reverse=True)
-  sim_scores = sim_scores[1:16]
-  tech_indices = [i[0] for i in sim_scores]
-  return df1['jobtitle'].iloc[tech_indices]
+def get_recommendations(title, cosine_sim=cosine_sim):
+    idx = indices[title]
+    sim_scores = list(enumerate(cosine_sim[idx]))
+    print(sim_scores)  # Add this line for debugging
+    sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)  # Sort based on similarity values
+    print(sim_scores)  # Add this line for debugging
+    sim_scores = sim_scores[1:16]
+    tech_indices = [i[0] for i in sim_scores]
+    return df1['jobtitle'].iloc[tech_indices]
 
 st.header('tech jobs recommender')
 jobs = pickle.load(open('job_list.pkl','rb'))
