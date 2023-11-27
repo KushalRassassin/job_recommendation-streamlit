@@ -33,13 +33,11 @@ indices = pd.Series(df1.index, index=df1['jobtitle']).drop_duplicates()
 def get_recommendations(title, cosine_sim=cosine_sim):
     idx = indices[title]
     sim_scores = list(enumerate(cosine_sim[idx]))
-    sim_scores = np.array(sim_scores)  # Convert to NumPy array
-    sim_scores = sim_scores[sim_scores[:, 1].argsort()[::-1]]  # Sort based on similarity values
+    sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)  # Sort based on similarity values
     sim_scores = sim_scores[1:16]
     tech_indices = [int(i[0]) for i in sim_scores]
     recommended_jobs = df1.iloc[tech_indices]['jobtitle'].tolist()
     return recommended_jobs
-
 
 st.header('tech jobs recommender')
 jobs = pickle.load(open('job_list.pkl','rb'))
