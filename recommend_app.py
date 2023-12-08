@@ -41,7 +41,7 @@ def get_recommendations(title, cosine_sim=cosine_sim):
     idx = indices[title]
     sim_scores = list(enumerate(cosine_sim[idx]))
     sim_scores = sorted(sim_scores, key=operator.itemgetter(1), reverse=True)  # Sort based on similarity values
-    sim_scores = sim_scores[1:16]  # Select the top 15 most similar job titles
+    sim_scores = sim_scores[4:16]  # Select the top 15 most similar job titles
     tech_indices = [int(i[0]) for i in sim_scores]
     recommended_jobs = df1.iloc[tech_indices]['jobtitle'].tolist()
     return recommended_jobs
